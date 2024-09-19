@@ -87,7 +87,7 @@ def _load_cameras(path):
     w = 1920
     focal = 1162
 
-    for i in range(poses):
+    for i in range(poses.shape[0]):
         intrinsics.append(np.array([focal, focal, w / 2, h / 2], dtype=np.float32))
         image_sizes.append(np.array([w, h], dtype=np.int32))
 
