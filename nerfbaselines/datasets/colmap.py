@@ -363,6 +363,7 @@ def load_colmap_dataset(path: Union[Path, str],
     )
     indices = None
     train_indices = np.arange(len(image_paths))
+    print("split, test_indices", split, test_indices)
     if split is not None:
         if test_indices is None and ((path / "train_list.txt").exists() or (path / "test_list.txt").exists()):
             logging.info(f"Colmap dataloader is loading split data from {path / f'{split}_list.txt'}")
