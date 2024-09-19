@@ -13,6 +13,7 @@ from nerfbaselines import UnloadedDataset, DatasetNotFoundError
 from nerfbaselines.datasets import dataset_index_select
 from nerfbaselines.datasets.colmap import load_colmap_dataset
 from nerfbaselines._constants import DATASETS_REPOSITORY
+from nerfbaselines import new_cameras, new_dataset
 
 
 T = TypeVar("T")
