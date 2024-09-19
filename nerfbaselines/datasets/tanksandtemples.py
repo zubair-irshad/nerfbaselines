@@ -58,7 +58,7 @@ def _assert_not_none(value: Optional[T]) -> T:
 
 def _select_indices_llff(image_names, llffhold=8):
     inds = np.argsort(image_names)
-    inds = inds[::-1]
+    # inds = inds[::-1]
     all_indices = np.arange(len(image_names))
     indices_train = inds[all_indices % llffhold != 0]
     indices_test = inds[all_indices % llffhold == 0]
