@@ -58,6 +58,7 @@ def _assert_not_none(value: Optional[T]) -> T:
 
 def _select_indices_llff(image_names, llffhold=8):
     inds = np.argsort(image_names)
+    inds = inds[::-1]
     all_indices = np.arange(len(image_names))
     indices_train = inds[all_indices % llffhold != 0]
     indices_test = inds[all_indices % llffhold == 0]
@@ -83,6 +84,12 @@ def load_tanksandtemples_dataset(path: Union[Path, str], split: str, downscale_f
     dataset["metadata"]["type"] = "object-centric"
     dataset["metadata"]["evaluation_protocol"] = "default"
     indices_train, indices_test = _select_indices_llff(dataset["image_paths"])
+
+    print("===========================================\n\n")
+    print("train_indices", train_indices)
+    print("test_indices_array", test_indices_array)
+    print("===========================================\n\n")
+    
     indices = indices_train if split == "train" else indices_test
     return dataset_index_select(dataset, indices)
 

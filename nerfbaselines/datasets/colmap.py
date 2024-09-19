@@ -416,6 +416,7 @@ def load_colmap_dataset(path: Union[Path, str],
             "color_space": "srgb",
             "evaluation_protocol": "default",
         })
+    print("indices", indices)
     if indices is not None:
         dataset = dataset_index_select(dataset, indices)
 
