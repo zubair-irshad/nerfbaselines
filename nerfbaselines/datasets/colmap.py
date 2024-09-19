@@ -202,6 +202,7 @@ def _parse_colmap_camera_params(camera: colmap_utils.Camera) -> Tuple[np.ndarray
 
 def _select_indices_llff(image_names, llffhold=8):
     inds = np.argsort(image_names)
+    inds = inds[::-1]
     all_indices = np.arange(len(image_names))
     indices_train = inds[all_indices % llffhold != 0]
     indices_test = inds[all_indices % llffhold == 0]
@@ -290,7 +291,11 @@ def load_colmap_dataset(path: Union[Path, str],
     i = 0
     c2w: np.ndarray
     images_points3D_ids = []
-    for image in images.values():
+
+    for k in sorted(images.keys()):
+        image = images[k]
+        
+    # for image in images.values():
         camera: colmap_utils.Camera = colmap_cameras[image.camera_id]
         intrinsics, camera_model, distortion_params, (w, h) = _parse_colmap_camera_params(camera)
         camera_sizes.append(np.array((w, h), dtype=np.int32))
@@ -319,6 +324,8 @@ def load_colmap_dataset(path: Union[Path, str],
 
         if "images_points3D_indices" in features:
             images_points3D_ids.append(image.point3D_ids)
+
+    print("image_names", image_names)
 
 
     # Estimate nears fars
@@ -372,7 +379,15 @@ def load_colmap_dataset(path: Union[Path, str],
             assert train_indices is not None
             logging.info(f"Colmap dataloader is using LLFF split with {train_indices.sum()} training images")
         elif test_indices is None:
+            print("HEREEEEEEEEEEEEEEEEEEEEEE")
+            print("========================================================\n\n\n")
             train_indices, test_indices_array = _select_indices_llff(image_names)
+
+            print("===========================================\n\n")
+            print("train_indices", train_indices)
+            print("test_indices_array", test_indices_array)
+            print("===========================================\n\n")
+            
             indices = train_indices if split == "train" else test_indices_array
             logging.info(f"Colmap dataloader is using LLFF split with {len(train_indices)} training and {len(test_indices_array)} test images")
         else:
