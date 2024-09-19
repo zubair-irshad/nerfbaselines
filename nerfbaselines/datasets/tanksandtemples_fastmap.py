@@ -117,9 +117,11 @@ def load_tanksandtemples_fastmap_dataset(path, downscale_factor: int = 1, split=
     dataset = new_dataset(
         image_paths=image_paths,
         cameras=cameras,
-        metadata={"id": "tanksandtemples_fastmap", 
-                  "type": "object-centric",
-                  "scene": "courthouse"})
+        metadata={
+            "id": None,
+            "color_space": "srgb",
+            "evaluation_protocol": "default",
+        })
 
     scene = next((x for x in SCENES if x in str(path)), None)
 
