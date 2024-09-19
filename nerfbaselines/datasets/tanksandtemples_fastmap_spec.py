@@ -3,6 +3,7 @@ from nerfbaselines import register
 
 register({
     "id": "tanksandtemples_fastmap",
+    "download_dataset_function": ".tanksandtemples:download_tanksandtemples_dataset",
     "metadata": {
         "id": "tanksandtemples_fastmap",
         "name": "Tanks and Temples",
