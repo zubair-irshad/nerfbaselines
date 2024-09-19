@@ -105,7 +105,7 @@ def _select_indices_llff(image_names, llffhold=8):
     indices_test = inds[all_indices % llffhold == 0]
     return indices_train, indices_test
 
-def load_fastmap_dataset(path, images_path, downscale_factor: int = 1, split=None, **kwargs):
+def load_tanksandtemples_fastmap_dataset(path, images_path, downscale_factor: int = 1, split=None, **kwargs):
     cameras = _load_cameras(path)
     # image_paths = [os.path.join(path, "images", name) for name in image_names]
 
@@ -137,28 +137,28 @@ def load_fastmap_dataset(path, images_path, downscale_factor: int = 1, split=Non
     indices = indices_train if split == "train" else indices_test
     return dataset_index_select(dataset, indices)
 
-def load_tanksandtemples_fastmap_dataset(path: Union[Path, str], split: str, downscale_factor: int = 2, **kwargs) -> UnloadedDataset:
+# def load_tanksandtemples_fastmap_dataset(path: Union[Path, str], split: str, downscale_factor: int = 2, **kwargs) -> UnloadedDataset:
 
-    # Load TT dataset
-    images_path = "images" if downscale_factor == 1 else f"images_{downscale_factor}"
-    scene = next((x for x in SCENES if x in str(path)), None)
-    assert scene is not None, f"Scene not found in path {path}"
+#     # Load TT dataset
+#     images_path = "images" if downscale_factor == 1 else f"images_{downscale_factor}"
+#     scene = next((x for x in SCENES if x in str(path)), None)
+#     assert scene is not None, f"Scene not found in path {path}"
 
-    dataset = load_colmap_dataset(path, images_path=images_path, split=None, **kwargs)
-    dataset["metadata"]["id"] = DATASET_NAME
-    dataset["metadata"]["scene"] = scene
-    dataset["metadata"]["downscale_factor"] = downscale_factor
-    dataset["metadata"]["type"] = "object-centric"
-    dataset["metadata"]["evaluation_protocol"] = "default"
-    indices_train, indices_test = _select_indices_llff(dataset["image_paths"])
+#     dataset = load_colmap_dataset(path, images_path=images_path, split=None, **kwargs)
+#     dataset["metadata"]["id"] = DATASET_NAME
+#     dataset["metadata"]["scene"] = scene
+#     dataset["metadata"]["downscale_factor"] = downscale_factor
+#     dataset["metadata"]["type"] = "object-centric"
+#     dataset["metadata"]["evaluation_protocol"] = "default"
+#     indices_train, indices_test = _select_indices_llff(dataset["image_paths"])
 
-    print("===========================================\n\n")
-    print("train_indices", indices_train)
-    print("test_indices_array", indices_test)
-    print("===========================================\n\n")
+#     print("===========================================\n\n")
+#     print("train_indices", indices_train)
+#     print("test_indices_array", indices_test)
+#     print("===========================================\n\n")
     
-    indices = indices_train if split == "train" else indices_test
-    return dataset_index_select(dataset, indices)
+#     indices = indices_train if split == "train" else indices_test
+#     return dataset_index_select(dataset, indices)
 
 
 
