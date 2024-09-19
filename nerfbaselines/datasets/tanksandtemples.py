@@ -86,8 +86,8 @@ def load_tanksandtemples_dataset(path: Union[Path, str], split: str, downscale_f
     indices_train, indices_test = _select_indices_llff(dataset["image_paths"])
 
     print("===========================================\n\n")
-    print("train_indices", train_indices)
-    print("test_indices_array", test_indices_array)
+    print("train_indices", indices_train)
+    print("test_indices_array", indices_test)
     print("===========================================\n\n")
     
     indices = indices_train if split == "train" else indices_test
