@@ -105,10 +105,11 @@ def _select_indices_llff(image_names, llffhold=8):
     indices_test = inds[all_indices % llffhold == 0]
     return indices_train, indices_test
 
-def load_tanksandtemples_fastmap_dataset(path, images_path, downscale_factor: int = 1, split=None, **kwargs):
+def load_tanksandtemples_fastmap_dataset(path, downscale_factor: int = 1, split=None, **kwargs):
     cameras = _load_cameras(path)
     # image_paths = [os.path.join(path, "images", name) for name in image_names]
 
+    images_path = "images" if downscale_factor == 1 else f"images_{downscale_factor}"
     # Load all the .jpg files in ascending order
     image_paths = sorted(glob.glob(os.path.join(path, images_path, '*.jpg')))
 
