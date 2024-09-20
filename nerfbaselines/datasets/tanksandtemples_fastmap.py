@@ -85,10 +85,10 @@ def _load_cameras(path):
     poses = read_trajectory(file_path)
 
     #Some weirdness happening during eval of 1/2 so trying to hardcode here if it works!
-    h = 1080/2
-    w = 1920/2
+    h = 1080
+    w = 1920
     # focal = 1162
-    focal = 1198/2
+    focal = 1198
 
     for i in range(poses.shape[0]):
         intrinsics.append(np.array([focal, focal, w / 2, h / 2], dtype=np.float32))
