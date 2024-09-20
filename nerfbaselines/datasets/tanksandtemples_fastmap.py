@@ -81,12 +81,13 @@ def _load_cameras(path):
     image_sizes = []
     image_names = []
 
-    file_path = os.path.join(path, "fastmap_courthouse.log")
+    file_path = os.path.join(path, "new_courthouse.log")
     poses = read_trajectory(file_path)
 
     h = 1080
     w = 1920
-    focal = 1162
+    # focal = 1162
+    focal = 1198
 
     for i in range(poses.shape[0]):
         intrinsics.append(np.array([focal, focal, w / 2, h / 2], dtype=np.float32))
@@ -106,7 +107,7 @@ def _select_indices_llff(image_names, llffhold=8):
     indices_test = inds[all_indices % llffhold == 0]
     return indices_train, indices_test
 
-def load_tanksandtemples_fastmap_dataset(path, downscale_factor: int = 1, split=None, **kwargs):
+def load_tanksandtemples_fastmap_dataset(path, downscale_factor: int = 2, split=None, **kwargs):
     cameras = _load_cameras(path)
     # image_paths = [os.path.join(path, "images", name) for name in image_names]
 
