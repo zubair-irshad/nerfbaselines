@@ -133,7 +133,10 @@ def load_tanksandtemples_fastmap_dataset(path, downscale_factor: int = 4, split=
     # downscale_loaded_factor = 1
     images_path = "images" if downscale_factor == 1 else f"images_{downscale_factor}"
     # Load all the .jpg files in ascending order
-    image_paths = sorted(glob.glob(os.path.join(path, images_path, '*.jpg')))
+    #Check if .jpg or .JPG or .png
+    
+    image_paths = sorted(glob.glob(os.path.join(path, images_path, '*.{jpg,JPG,png}')))
+    # image_paths = sorted(glob.glob(os.path.join(path, images_path, '*.jpg')))
 
     dataset = new_dataset(
         image_paths=image_paths,
