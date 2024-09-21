@@ -81,14 +81,15 @@ def _load_cameras(path):
     image_sizes = []
     image_names = []
 
-    file_path = os.path.join(path, "correct_courthouse_c2w.log")
+    # file_path = os.path.join(path, "correct_courthouse_c2w.log")
+    file_path = os.path.join(path, "Courthouse_COLMAP_SfM.log")
     poses = read_trajectory(file_path)
 
     #Some weirdness happening during eval of 1/2 so trying to hardcode here if it works!
     h = 1080
     w = 1920
-    # focal = 1162
-    focal = 1195.5
+    focal = 1162 # colmap focal
+    # focal = 1195.5 # fastmap focal
 
     for i in range(poses.shape[0]):
         intrinsics.append(np.array([focal, focal, w / 2, h / 2], dtype=np.float32))
