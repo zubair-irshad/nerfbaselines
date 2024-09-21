@@ -82,14 +82,31 @@ def _load_cameras(path):
     image_names = []
 
     # file_path = os.path.join(path, "correct_courthouse_c2w.log")
-    file_path = os.path.join(path, "Courthouse_COLMAP_SfM.log")
+    file_path = os.path.join(path, "garden_fastmap.log")
     poses = read_trajectory(file_path)
 
+    dataset = 'mipnerf360'
+    run_type = 'fastmap'
+
     #Some weirdness happening during eval of 1/2 so trying to hardcode here if it works!
-    h = 1080
-    w = 1920
-    focal = 1162 # colmap focal
-    # focal = 1195.5 # fastmap focal
+
+    if dataset == 'tnt':
+        h = 1080
+        w = 1920
+        focal_colmap = 1162 # colmap focal
+        focal_fastmap = 1195.5 # fastmap focal
+
+    elif dataset == 'mipnerf360':
+        h = 3361
+        w = 5187
+        focal_fastmap = 3845.72
+        # focal_colmap = 3845.72
+
+    if run_type == 'fastmap':
+        focal = focal_fastmap
+    else:
+        focal = focal_colmap
+
 
     for i in range(poses.shape[0]):
         intrinsics.append(np.array([focal, focal, w / 2, h / 2], dtype=np.float32))
@@ -109,7 +126,7 @@ def _select_indices_llff(image_names, llffhold=8):
     indices_test = inds[all_indices % llffhold == 0]
     return indices_train, indices_test
 
-def load_tanksandtemples_fastmap_dataset(path, downscale_factor: int = 2, split=None, **kwargs):
+def load_tanksandtemples_fastmap_dataset(path, downscale_factor: int = 4, split=None, **kwargs):
     cameras = _load_cameras(path)
     # image_paths = [os.path.join(path, "images", name) for name in image_names]
 
