@@ -130,7 +130,7 @@ def load_tanksandtemples_fastmap_dataset(path, downscale_factor: int = 4, split=
     cameras = _load_cameras(path)
     # image_paths = [os.path.join(path, "images", name) for name in image_names]
 
-    downscale_loaded_factor = 1
+    # downscale_loaded_factor = 1
     images_path = "images" if downscale_factor == 1 else f"images_{downscale_factor}"
     # Load all the .jpg files in ascending order
     image_paths = sorted(glob.glob(os.path.join(path, images_path, '*.jpg')))
@@ -149,7 +149,7 @@ def load_tanksandtemples_fastmap_dataset(path, downscale_factor: int = 4, split=
     dataset["metadata"]["id"] = DATASET_NAME
     dataset["metadata"]["scene"] = scene
     dataset["metadata"]["downscale_factor"] = downscale_factor
-    dataset["metadata"]["downscale_loaded_factor"] = downscale_loaded_factor
+    # dataset["metadata"]["downscale_loaded_factor"] = downscale_loaded_factor
     dataset["metadata"]["type"] = "object-centric"
     dataset["metadata"]["evaluation_protocol"] = "default"
 
