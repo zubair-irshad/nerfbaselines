@@ -90,22 +90,33 @@ def _load_cameras(path):
 
     #Some weirdness happening during eval of 1/2 so trying to hardcode here if it works!
 
-    if dataset == 'tnt':
-        h = 1080
-        w = 1920
-        focal_colmap = 1162 # colmap focal
-        focal_fastmap = 1195.5 # fastmap focal
+    # if dataset == 'tnt':
+    #     h = 1080
+    #     w = 1920
+    #     focal_colmap = 1162 # colmap focal
+    #     focal_fastmap = 1195.5 # fastmap focal
 
-    elif dataset == 'mipnerf360':
-        h = 3361
-        w = 5187
-        focal_fastmap = 3845.72
-        # focal_colmap = 3845.72
+    # elif dataset == 'mipnerf360':
+    #     h = 3361
+    #     w = 5187
+    #     focal_fastmap = 3845.72
+    #     # focal_colmap = 3845.72
 
-    if run_type == 'fastmap':
-        focal = focal_fastmap
-    else:
-        focal = focal_colmap
+    # elif dataset == 'kitchen':
+
+    #     focal_fastmap = 3241.81
+
+    # if run_type == 'fastmap':
+    #     focal = focal_fastmap
+    # else:
+    #     focal = focal_colmap
+
+    info_file = os.path.join(path, 'image_info.txt')
+    with open(info_file, 'r') as f:
+        lines = f.readlines()
+        h = int(lines[0].split()[1])
+        w = int(lines[1].split()[1])
+        focal = float(lines[2].split()[1])
 
 
     for i in range(poses.shape[0]):

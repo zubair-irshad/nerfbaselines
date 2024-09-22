@@ -25,8 +25,16 @@ def create_nb_info_json(folder_path, focal_length):
         json.dump(nb_info, f, indent=4)
     print(f"nb-info.json file created at: {nb_info_path}")
 
+    # Load one of the JPG or PNG images to get its dimensions
+    image_path = next(
+        (os.path.join(images_folder, img) 
+         for img in os.listdir(images_folder) 
+         if img.lower().endswith(('.jpg', '.png'))),
+        None
+    )
+
     # Load one of the JPG images to get its dimensions
-    image_path = next((os.path.join(images_folder, img) for img in os.listdir(images_folder) if img.endswith('.JPG')), None)
+    # image_path = next((os.path.join(images_folder, img) for img in os.listdir(images_folder) if img.endswith('.JPG')) , None)
     if image_path is None:
         raise FileNotFoundError("No .JPG images found in the images folder.")
 
