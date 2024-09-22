@@ -82,7 +82,12 @@ def _load_cameras(path):
     image_names = []
 
     # file_path = os.path.join(path, "correct_courthouse_c2w.log")
-    file_path = os.path.join(path, "kitchen_fastmap.log")
+
+
+    file_pattern = os.path.join(path, "*fastmap*.log")
+    files = glob.glob(file_pattern)
+    file_path = files[0]
+
     poses = read_trajectory(file_path)
 
     # dataset = 'mipnerf360'

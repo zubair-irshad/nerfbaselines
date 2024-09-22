@@ -25,7 +25,7 @@ _scenes360_res = {
     "treehill": 4,
     "bonsai": 2,
     "counter": 2,
-    "kitchen": 2,
+    "kitchen": 4,
     "room": 2,
 }
 SCENES = set(_scenes360_res.keys())
