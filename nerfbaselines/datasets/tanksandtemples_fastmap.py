@@ -82,11 +82,11 @@ def _load_cameras(path):
     image_names = []
 
     # file_path = os.path.join(path, "correct_courthouse_c2w.log")
-    file_path = os.path.join(path, "garden_fastmap.log")
+    file_path = os.path.join(path, "kitchen_fastmap.log")
     poses = read_trajectory(file_path)
 
-    dataset = 'mipnerf360'
-    run_type = 'fastmap'
+    # dataset = 'mipnerf360'
+    # run_type = 'fastmap'
 
     #Some weirdness happening during eval of 1/2 so trying to hardcode here if it works!
 
