@@ -65,7 +65,7 @@ def _select_indices_llff(image_names, llffhold=8):
     return indices_train, indices_test
 
 
-def load_tanksandtemples_dataset(path: Union[Path, str], split: str, downscale_factor: int = 2, **kwargs) -> UnloadedDataset:
+def load_tanksandtemples_dataset(path: Union[Path, str], split: str, downscale_factor: int = 4, **kwargs) -> UnloadedDataset:
     path = Path(path)
     if split:
         assert split in {"train", "test"}
