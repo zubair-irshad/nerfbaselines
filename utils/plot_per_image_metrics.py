@@ -30,9 +30,15 @@ def plot_metrics(psnr_colmap, ssim_colmap, lpips_colmap, psnr_fastmap, ssim_fast
 
     plt.figure(figsize=(15, 5))
     #only plot PSNR
-    plt.plot(psnr_colmap, color='red', label='zipnerf_colmap')
-    plt.plot(psnr_fastmap, color='blue', label='zipnerf_fastmap')
-    plt.title('PSNR')
+    # plt.plot(psnr_colmap, color='red', label='zipnerf_colmap')
+    # plt.plot(psnr_fastmap, color='blue', label='zipnerf_fastmap')
+    #make a bar plot
+
+    plt.bar(range(len(psnr_colmap)), psnr_colmap, color='red', label='zipnerf_colmap')
+    plt.bar(range(len(psnr_fastmap)), psnr_fastmap, color='blue', label='zipnerf_fastmap')
+
+    title = 'Per Image PSNR for ' + scene_name
+    plt.title(title)
     plt.xlabel('Evaluation Index')
     plt.ylabel('PSNR')
     plt.legend()
