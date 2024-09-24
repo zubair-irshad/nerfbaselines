@@ -48,7 +48,9 @@ def plot_metrics(psnr_colmap, ssim_colmap, lpips_colmap, psnr_fastmap, ssim_fast
     # Add labels and title
     plt.xlabel('Sample Index')
     plt.ylabel('PSNR Values')
-    plt.title('PSNR Comparison')
+
+    title = 'Per Image PSNR Comparison for Scene: ' + scene_name
+    plt.title(title)
     plt.xticks(index + bar_width / 2, [f'{i}' for i in range(n)])  # Center the x labels
     plt.legend()
 
