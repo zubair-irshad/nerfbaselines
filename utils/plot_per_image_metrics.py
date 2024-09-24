@@ -4,6 +4,7 @@ import base64
 import struct
 import argparse
 import matplotlib.pyplot as plt
+import numpy as np
 
 def decode_base64(encoded_str):
     """Decode a base64 string into a list of floats."""
@@ -29,19 +30,46 @@ def plot_metrics(psnr_colmap, ssim_colmap, lpips_colmap, psnr_fastmap, ssim_fast
     """Plot PSNR, SSIM, and LPIPS for colmap and fastmap."""
 
     plt.figure(figsize=(15, 5))
+
+    # Number of bars
+    n = len(psnr_colmap)
+
+    # Set the width of the bars
+    bar_width = 0.35
+
+    # Set the positions of the bars on the x-axis
+    index = np.arange(n)
+
+    # Create the bar plot
+    plt.bar(index, psnr_colmap, bar_width, label='Colmap', alpha=0.7, color='blue')
+    plt.bar(index + bar_width, psnr_fastmap, bar_width, label='Fastmap', alpha=0.7, color='orange')
+
+
+    # Add labels and title
+    plt.xlabel('Sample Index')
+    plt.ylabel('PSNR Values')
+    plt.title('PSNR Comparison')
+    plt.xticks(index + bar_width / 2, [f'Sample {i}' for i in range(n)])  # Center the x labels
+    plt.legend()
+
+    # Show the plot
+    plt.tight_layout()
+
     #only plot PSNR
     # plt.plot(psnr_colmap, color='red', label='zipnerf_colmap')
     # plt.plot(psnr_fastmap, color='blue', label='zipnerf_fastmap')
     #make a bar plot
 
-    plt.bar(range(len(psnr_colmap)), psnr_colmap, color='red', label='zipnerf_colmap')
-    plt.bar(range(len(psnr_fastmap)), psnr_fastmap, color='blue', label='zipnerf_fastmap')
+    # plt.bar(range(len(psnr_colmap)), psnr_colmap, color='red', label='zipnerf_colmap')
+    # plt.bar(range(len(psnr_fastmap)), psnr_fastmap, color='blue', label='zipnerf_fastmap')
+    #per image there should be too bars side by side
 
-    title = 'Per Image PSNR for ' + scene_name
-    plt.title(title)
-    plt.xlabel('Evaluation Index')
-    plt.ylabel('PSNR')
-    plt.legend()
+
+    # title = 'Per Image PSNR for ' + scene_name
+    # plt.title(title)
+    # plt.xlabel('Evaluation Index')
+    # plt.ylabel('PSNR')
+    # plt.legend()
 
     # fig, ax = plt.subplots(1, 3, figsize=(15, 5))
 
@@ -69,7 +97,7 @@ def plot_metrics(psnr_colmap, ssim_colmap, lpips_colmap, psnr_fastmap, ssim_fast
     # ax[2].set_ylabel('LPIPS')
     # ax[2].legend()
 
-    plt.tight_layout()
+    # plt.tight_layout()
     plt.savefig('results/'+'metrics'+scene_name+'.png')
     # plt.show()
 
