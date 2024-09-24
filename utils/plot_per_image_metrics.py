@@ -27,31 +27,41 @@ def load_metrics(subfolder):
 
 def plot_metrics(psnr_colmap, ssim_colmap, lpips_colmap, psnr_fastmap, ssim_fastmap, lpips_fastmap, scene_name):
     """Plot PSNR, SSIM, and LPIPS for colmap and fastmap."""
-    fig, ax = plt.subplots(1, 3, figsize=(15, 5))
 
-    # Plot PSNR
-    ax[0].plot(psnr_colmap, color='red', label='zipnerf_colmap')
-    ax[0].plot(psnr_fastmap, color='blue', label='zipnerf_fastmap')
-    ax[0].set_title('PSNR')
-    ax[0].set_xlabel('Evaluation Index')
-    ax[0].set_ylabel('PSNR')
-    ax[0].legend()
+    plt.figure(figsize=(15, 5))
+    #only plot PSNR
+    plt.plot(psnr_colmap, color='red', label='zipnerf_colmap')
+    plt.plot(psnr_fastmap, color='blue', label='zipnerf_fastmap')
+    plt.title('PSNR')
+    plt.xlabel('Evaluation Index')
+    plt.ylabel('PSNR')
+    plt.legend()
 
-    # Plot SSIM
-    ax[1].plot(ssim_colmap, color='red', label='zipnerf_colmap')
-    ax[1].plot(ssim_fastmap, color='blue', label='zipnerf_fastmap')
-    ax[1].set_title('SSIM')
-    ax[1].set_xlabel('Evaluation Index')
-    ax[1].set_ylabel('SSIM')
-    ax[1].legend()
+    # fig, ax = plt.subplots(1, 3, figsize=(15, 5))
 
-    # Plot LPIPS
-    ax[2].plot(lpips_colmap, color='red', label='zipnerf_colmap')
-    ax[2].plot(lpips_fastmap, color='blue', label='zipnerf_fastmap')
-    ax[2].set_title('LPIPS')
-    ax[2].set_xlabel('Evaluation Index')
-    ax[2].set_ylabel('LPIPS')
-    ax[2].legend()
+    # # Plot PSNR
+    # ax[0].plot(psnr_colmap, color='red', label='zipnerf_colmap')
+    # ax[0].plot(psnr_fastmap, color='blue', label='zipnerf_fastmap')
+    # ax[0].set_title('PSNR')
+    # ax[0].set_xlabel('Evaluation Index')
+    # ax[0].set_ylabel('PSNR')
+    # ax[0].legend()
+
+    # # Plot SSIM
+    # ax[1].plot(ssim_colmap, color='red', label='zipnerf_colmap')
+    # ax[1].plot(ssim_fastmap, color='blue', label='zipnerf_fastmap')
+    # ax[1].set_title('SSIM')
+    # ax[1].set_xlabel('Evaluation Index')
+    # ax[1].set_ylabel('SSIM')
+    # ax[1].legend()
+
+    # # Plot LPIPS
+    # ax[2].plot(lpips_colmap, color='red', label='zipnerf_colmap')
+    # ax[2].plot(lpips_fastmap, color='blue', label='zipnerf_fastmap')
+    # ax[2].set_title('LPIPS')
+    # ax[2].set_xlabel('Evaluation Index')
+    # ax[2].set_ylabel('LPIPS')
+    # ax[2].legend()
 
     plt.tight_layout()
     plt.savefig('results/'+'metrics'+scene_name+'.png')
@@ -69,12 +79,16 @@ def main(data_dir, scene):
         folder_path = os.path.join(data_dir, subfolder)
         psnr, ssim, lpips = load_metrics(folder_path)
 
+        print("subfolder:", subfolder)
+
         if 'colmap' in subfolder:
+            print("in colmap")
         # if subfolder == "zipnerf_colmap_kitchen_by4":
             psnr_colmap.append(psnr)
             ssim_colmap.append(ssim)
             lpips_colmap.append(lpips)
         elif 'fastmap' in subfolder:
+            print("in fastmap")
         # elif subfolder == "zipnerf_fastmap_kitchen_by4":
             psnr_fastmap.append(psnr)
             ssim_fastmap.append(ssim)
