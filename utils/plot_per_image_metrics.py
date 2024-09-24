@@ -41,15 +41,15 @@ def plot_metrics(psnr_colmap, ssim_colmap, lpips_colmap, psnr_fastmap, ssim_fast
     index = np.arange(n)
 
     # Create the bar plot
-    plt.bar(index, psnr_colmap, bar_width, label='Colmap', alpha=0.7, color='blue')
-    plt.bar(index + bar_width, psnr_fastmap, bar_width, label='Fastmap', alpha=0.7, color='orange')
+    plt.bar(index, psnr_colmap, bar_width, label='Colmap', alpha=0.7, color='red')
+    plt.bar(index + bar_width, psnr_fastmap, bar_width, label='Fastmap', alpha=0.7, color='blue')
 
 
     # Add labels and title
     plt.xlabel('Sample Index')
     plt.ylabel('PSNR Values')
     plt.title('PSNR Comparison')
-    plt.xticks(index + bar_width / 2, [f'Sample {i}' for i in range(n)])  # Center the x labels
+    plt.xticks(index + bar_width / 2, [f'{i}' for i in range(n)])  # Center the x labels
     plt.legend()
 
     # Show the plot
