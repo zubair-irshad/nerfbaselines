@@ -19,11 +19,11 @@ def load_metrics(subfolder):
         data = json.load(f)
     
     metrics_raw = data["metrics_raw"]
-    psnr = decode_base64(metrics_raw["psnr"])[0]
-    ssim = decode_base64(metrics_raw["ssim"])[0]
-    lpips = decode_base64(metrics_raw["lpips"])[0]
+    all_psnr = decode_base64(metrics_raw["psnr"])
+    all_ssim = decode_base64(metrics_raw["ssim"])
+    all_lpips = decode_base64(metrics_raw["lpips"])
     
-    return psnr, ssim, lpips
+    return all_psnr, all_ssim, all_lpips
 
 def plot_metrics(psnr_colmap, ssim_colmap, lpips_colmap, psnr_fastmap, ssim_fastmap, lpips_fastmap, scene_name):
     """Plot PSNR, SSIM, and LPIPS for colmap and fastmap."""
@@ -77,22 +77,29 @@ def main(data_dir, scene):
 
     for subfolder in subfolders:
         folder_path = os.path.join(data_dir, subfolder)
-        psnr, ssim, lpips = load_metrics(folder_path)
+        all_psnr, all_ssim, all_lpips = load_metrics(folder_path)
 
         print("subfolder:", subfolder)
 
         if 'colmap' in subfolder:
             print("in colmap")
         # if subfolder == "zipnerf_colmap_kitchen_by4":
-            psnr_colmap.append(psnr)
-            ssim_colmap.append(ssim)
-            lpips_colmap.append(lpips)
+            # psnr_colmap.append(psnr)
+            # ssim_colmap.append(ssim)
+            # lpips_colmap.append(lpips)
+            psnr_colmap = all_psnr
+            ssim_colmap = all_ssim
+            lpips_colmap = all_lpips
+
         elif 'fastmap' in subfolder:
             print("in fastmap")
         # elif subfolder == "zipnerf_fastmap_kitchen_by4":
-            psnr_fastmap.append(psnr)
-            ssim_fastmap.append(ssim)
-            lpips_fastmap.append(lpips)
+            # psnr_fastmap.append(psnr)
+            # ssim_fastmap.append(ssim)
+            # lpips_fastmap.append(lpips)
+            psnr_fastmap = all_psnr
+            ssim_fastmap = all_ssim
+            lpips_fastmap = all_lpips
 
     plot_metrics(psnr_colmap, ssim_colmap, lpips_colmap, psnr_fastmap, ssim_fastmap, lpips_fastmap, scene)
 
