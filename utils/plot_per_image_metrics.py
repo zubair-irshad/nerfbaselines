@@ -31,6 +31,10 @@ def plot_metrics(psnr_colmap, ssim_colmap, lpips_colmap, psnr_fastmap, ssim_fast
 
     plt.figure(figsize=(15, 5))
 
+    #retrict it to 35 values for plotting
+
+    psnr_colmap = psnr_colmap[:35]
+    psnr_fastmap = psnr_fastmap[:35]
     # Number of bars
     n = len(psnr_colmap)
 
