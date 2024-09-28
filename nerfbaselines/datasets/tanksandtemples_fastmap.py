@@ -102,6 +102,8 @@ def _load_cameras(path, mask=None):
         intrinsics.append(np.array([focal, focal, w / 2, h / 2], dtype=np.float32))
         image_sizes.append(np.array([w, h], dtype=np.int32))
 
+    print("len(poses)", len(poses))
+    print("poses", poses.shape)
     if mask is not None:
         # Filter poses, intrinsics, and image_sizes based on the mask
         poses = poses[mask == 1]
