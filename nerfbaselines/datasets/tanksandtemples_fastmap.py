@@ -148,7 +148,7 @@ def load_tanksandtemples_fastmap_dataset(path, downscale_factor: int = 2, split=
 
         # Print or use the filtered image paths
         print(filtered_image_paths)
-        image_paths = filtered_image_paths\
+        image_paths = filtered_image_paths
         print("after filtering, number of images", len(image_paths))
 
     # print("image_paths", image_paths)
