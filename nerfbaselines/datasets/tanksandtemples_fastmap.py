@@ -110,6 +110,8 @@ def _load_cameras(path, mask=None):
         intrinsics = [intrinsics[i] for i in range(len(intrinsics)) if mask[i] == 1]
         image_sizes = [image_sizes[i] for i in range(len(image_sizes)) if mask[i] == 1]
 
+    print("poses", poses.shape)
+
     return new_cameras(
         poses=poses,
         intrinsics=np.stack(intrinsics),
@@ -148,8 +150,6 @@ def load_tanksandtemples_fastmap_dataset(path, downscale_factor: int = 2, split=
         # Assuming image_paths is already defined
         filtered_image_paths = [image_paths[i] for i in range(len(image_paths)) if mask[i] == 1]
 
-        # Print or use the filtered image paths
-        print(filtered_image_paths)
         image_paths = filtered_image_paths
         print("after filtering, number of images", len(image_paths))
 
