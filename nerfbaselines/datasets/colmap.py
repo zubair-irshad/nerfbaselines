@@ -201,7 +201,7 @@ def _parse_colmap_camera_params(camera: colmap_utils.Camera) -> Tuple[np.ndarray
 
 
 def _select_indices_llff(image_names, llffhold=8):
-    inds = np.argsort(image_names)
+    # inds = np.argsort(image_names)
     # inds = inds[::-1]
     all_indices = np.arange(len(image_names))
     indices_train = inds[all_indices % llffhold != 0]
@@ -278,12 +278,6 @@ def load_colmap_dataset(path: Union[Path, str],
         else:
             raise DatasetNotFoundError("Missing 'sparse/0/points3D.{bin,txt}' file in COLMAP dataset")
 
-    if mask_indices:
-        print("Load mask.txt... before filering number of iamges", len(image_paths))
-
-        with open(os.path.join(path, 'courthouse_mask.txt'), 'r') as file:
-            mask = list(map(int, file.read().split()))
-
     # Convert to tensors
     camera_intrinsics = []
     camera_poses = []
@@ -332,25 +326,32 @@ def load_colmap_dataset(path: Union[Path, str],
         if "images_points3D_indices" in features:
             images_points3D_ids.append(image.point3D_ids)
 
-        sorted_indices = np.argsort(image_names)
-        
-        image_names = [image_names[i] for i in sorted_indices]
-        image_paths = [image_paths[i] for i in sorted_indices]
-        camera_poses = [camera_poses[i] for i in sorted_indices]
-        camera_intrinsics = [camera_intrinsics[i] for i in sorted_indices]
-        camera_distortion_params = [camera_distortion_params[i] for i in sorted_indices]
-        camera_sizes = [camera_sizes[i] for i in sorted_indices]
-        camera_models = [camera_models[i] for i in sorted_indices]
+    if mask_indices:
+        print("Load mask.txt... before filering number of iamges", len(image_paths))
+
+        with open(os.path.join(path, 'courthouse_mask.txt'), 'r') as file:
+            mask = list(map(int, file.read().split()))
+
+    sorted_indices = np.argsort(image_names)
+    
+    image_names = [image_names[i] for i in sorted_indices]
+    image_paths = [image_paths[i] for i in sorted_indices]
+    camera_poses = [camera_poses[i] for i in sorted_indices]
+    camera_intrinsics = [camera_intrinsics[i] for i in sorted_indices]
+    camera_distortion_params = [camera_distortion_params[i] for i in sorted_indices]
+    camera_sizes = [camera_sizes[i] for i in sorted_indices]
+    camera_models = [camera_models[i] for i in sorted_indices]
 
 
-        if mask_indices:
-            image_paths = [image_paths[i] for i in range(len(image_paths)) if mask[i] == 1]
-            camera_poses = [camera_poses[i] for i in range(len(camera_poses)) if mask[i] == 1]
-            image_names = [image_names[i] for i in range(len(image_names)) if mask[i] == 1]
-            camera_intrinsics = [camera_intrinsics[i] for i in range(len(camera_intrinsics)) if mask[i] == 1]
-            camera_distortion_params = [camera_distortion_params[i] for i in range(len(camera_intrinsics)) if mask[i] == 1]
-            camera_sizes = [camera_sizes[i] for i in range(len(camera_intrinsics)) if mask[i] == 1]
-            camera_models = [camera_models[i] for i in range(len(camera_intrinsics)) if mask[i] == 1]
+    if mask_indices:
+        print("masking indices.....")
+        image_paths = [image_paths[i] for i in range(len(image_paths)) if mask[i] == 1]
+        camera_poses = [camera_poses[i] for i in range(len(camera_poses)) if mask[i] == 1]
+        image_names = [image_names[i] for i in range(len(image_names)) if mask[i] == 1]
+        camera_intrinsics = [camera_intrinsics[i] for i in range(len(camera_intrinsics)) if mask[i] == 1]
+        camera_distortion_params = [camera_distortion_params[i] for i in range(len(camera_intrinsics)) if mask[i] == 1]
+        camera_sizes = [camera_sizes[i] for i in range(len(camera_intrinsics)) if mask[i] == 1]
+        camera_models = [camera_models[i] for i in range(len(camera_intrinsics)) if mask[i] == 1]
 
     print("image_names", image_names)
 
