@@ -106,7 +106,7 @@ def _load_cameras(path, mask=None):
     print("poses", poses.shape)
     if mask is not None:
         # Filter poses, intrinsics, and image_sizes based on the mask
-        poses = [poses[i] for i in range(len(image_paths)) if mask[i] == 1]
+        poses = [poses[i] for i in range(len(poses)) if mask[i] == 1]
         intrinsics = [intrinsics[i] for i in range(len(intrinsics)) if mask[i] == 1]
         image_sizes = [image_sizes[i] for i in range(len(image_sizes)) if mask[i] == 1]
         poses = np.array(poses)
