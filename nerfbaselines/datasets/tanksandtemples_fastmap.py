@@ -142,7 +142,7 @@ def _select_indices_llff(image_names, llffhold=8):
     indices_test = inds[all_indices % llffhold == 0]
     return indices_train, indices_test
 
-def load_tanksandtemples_fastmap_dataset(path, downscale_factor: int = 2, split=None, **kwargs):
+def load_tanksandtemples_fastmap_dataset(path, downscale_factor: int = 2, split=None, mask_indices= False, **kwargs):
     cameras = _load_cameras(path)
     # image_paths = [os.path.join(path, "images", name) for name in image_names]
 
@@ -153,8 +153,30 @@ def load_tanksandtemples_fastmap_dataset(path, downscale_factor: int = 2, split=
     
     image_paths = sorted(glob.glob(os.path.join(path, images_path, '*.jpg')))
 
+
+
     if len(image_paths) == 0:
         image_paths = sorted(glob.glob(os.path.join(path, images_path, '*.JPG')))
+
+    if mask_indices:
+
+        with open('mask_courthouse.txt', 'r') as file:
+            mask = list(map(int, file.read().split()))
+
+        # Step 2: Filter image_paths based on the mask
+        # Assuming image_paths is already defined
+        filtered_image_paths = [image_paths[i] for i in range(len(image_paths)) if mask[i] == 1]
+
+        # Print or use the filtered image paths
+        print(filtered_image_paths)
+        image_paths = filtered_image_paths
+
+    print("after filtering, number of images", len(image_paths))
+
+    print("image_paths", image_paths)
+
+
+    print("Load mask.txt... before filering number of iamges", len(image_paths))
 
     dataset = new_dataset(
         image_paths=image_paths,
