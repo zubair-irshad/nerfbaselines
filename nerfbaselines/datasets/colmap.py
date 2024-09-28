@@ -343,17 +343,21 @@ def load_colmap_dataset(path: Union[Path, str],
     camera_sizes = [camera_sizes[i] for i in sorted_indices]
     camera_models = [camera_models[i] for i in sorted_indices]
 
+    
 
     if mask_indices:
+
         print("number of images before masking indices", len(image_names))
         print("masking indices.....")
+
+        print("before len images, poses, names, intrinsics, models", len(image_paths), len(camera_poses), len(camera_intrinsics), len(camera_models))
         image_paths = [image_paths[i] for i in range(len(image_paths)) if mask[i] == 1]
         camera_poses = [camera_poses[i] for i in range(len(camera_poses)) if mask[i] == 1]
         image_names = [image_names[i] for i in range(len(image_names)) if mask[i] == 1]
         camera_intrinsics = [camera_intrinsics[i] for i in range(len(camera_intrinsics)) if mask[i] == 1]
-        camera_distortion_params = [camera_distortion_params[i] for i in range(len(camera_intrinsics)) if mask[i] == 1]
-        camera_sizes = [camera_sizes[i] for i in range(len(camera_intrinsics)) if mask[i] == 1]
-        camera_models = [camera_models[i] for i in range(len(camera_intrinsics)) if mask[i] == 1]
+        camera_distortion_params = [camera_distortion_params[i] for i in range(len(camera_distortion_params)) if mask[i] == 1]
+        camera_sizes = [camera_sizes[i] for i in range(len(camera_sizes)) if mask[i] == 1]
+        camera_models = [camera_models[i] for i in range(len(camera_models)) if mask[i] == 1]
         print("number of images after masking indices", len(image_names))
 
     print("image_names", image_names)
