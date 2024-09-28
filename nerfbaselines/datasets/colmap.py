@@ -8,6 +8,7 @@ from nerfbaselines import DatasetFeature, CameraModel, camera_model_to_int, new_
 from ..utils import Indices
 from . import _colmap_utils as colmap_utils
 from ._common import padded_stack, dataset_index_select
+import os
 
 
 def _parse_colmap_camera_params(camera: colmap_utils.Camera) -> Tuple[np.ndarray, int, np.ndarray, Tuple[int, int]]:
