@@ -75,7 +75,7 @@ def read_trajectory(filename):
     return poses
 
 
-def _load_cameras(path):
+def _load_cameras(path, mask=None):
     poses = []
     intrinsics = []
     image_sizes = []
@@ -90,32 +90,6 @@ def _load_cameras(path):
 
     poses = read_trajectory(file_path)
 
-    # dataset = 'mipnerf360'
-    # run_type = 'fastmap'
-
-    #Some weirdness happening during eval of 1/2 so trying to hardcode here if it works!
-
-    # if dataset == 'tnt':
-    #     h = 1080
-    #     w = 1920
-    #     focal_colmap = 1162 # colmap focal
-    #     focal_fastmap = 1195.5 # fastmap focal
-
-    # elif dataset == 'mipnerf360':
-    #     h = 3361
-    #     w = 5187
-    #     focal_fastmap = 3845.72
-    #     # focal_colmap = 3845.72
-
-    # elif dataset == 'kitchen':
-
-    #     focal_fastmap = 3241.81
-
-    # if run_type == 'fastmap':
-    #     focal = focal_fastmap
-    # else:
-    #     focal = focal_colmap
-
     info_file = os.path.join(path, 'image_info.txt')
     with open(info_file, 'r') as f:
         lines = f.readlines()
@@ -127,6 +101,12 @@ def _load_cameras(path):
     for i in range(poses.shape[0]):
         intrinsics.append(np.array([focal, focal, w / 2, h / 2], dtype=np.float32))
         image_sizes.append(np.array([w, h], dtype=np.int32))
+
+    if mask is not None:
+        # Filter poses, intrinsics, and image_sizes based on the mask
+        poses = poses[mask == 1]
+        intrinsics = [intrinsics[i] for i in range(len(intrinsics)) if mask[i] == 1]
+        image_sizes = [image_sizes[i] for i in range(len(image_sizes)) if mask[i] == 1]
 
     return new_cameras(
         poses=poses,
@@ -143,7 +123,6 @@ def _select_indices_llff(image_names, llffhold=8):
     return indices_train, indices_test
 
 def load_tanksandtemples_fastmap_dataset(path, downscale_factor: int = 2, split=None, mask_indices= True, **kwargs):
-    cameras = _load_cameras(path)
     # image_paths = [os.path.join(path, "images", name) for name in image_names]
 
     # downscale_loaded_factor = 1
@@ -154,11 +133,11 @@ def load_tanksandtemples_fastmap_dataset(path, downscale_factor: int = 2, split=
     image_paths = sorted(glob.glob(os.path.join(path, images_path, '*.jpg')))
 
 
-
     if len(image_paths) == 0:
         image_paths = sorted(glob.glob(os.path.join(path, images_path, '*.JPG')))
 
     if mask_indices:
+        print("Load mask.txt... before filering number of iamges", len(image_paths))
 
         with open(os.path.join(path, 'courthouse_mask.txt'), 'r') as file:
             mask = list(map(int, file.read().split()))
@@ -169,14 +148,16 @@ def load_tanksandtemples_fastmap_dataset(path, downscale_factor: int = 2, split=
 
         # Print or use the filtered image paths
         print(filtered_image_paths)
-        image_paths = filtered_image_paths
+        image_paths = filtered_image_paths\
+        print("after filtering, number of images", len(image_paths))
 
-    print("after filtering, number of images", len(image_paths))
+    # print("image_paths", image_paths)
 
-    print("image_paths", image_paths)
+    if mask_indices:
+        cameras = _load_cameras(path, mask)
+    else:
+        cameras = _load_cameras(path)
 
-
-    print("Load mask.txt... before filering number of iamges", len(image_paths))
 
     dataset = new_dataset(
         image_paths=image_paths,
