@@ -160,7 +160,7 @@ def load_tanksandtemples_fastmap_dataset(path, downscale_factor: int = 2, split=
 
     if mask_indices:
 
-        with open('courthouse_mask.txt', 'r') as file:
+        with open(os.path.join(path, 'courthouse_mask.txt'), 'r') as file:
             mask = list(map(int, file.read().split()))
 
         # Step 2: Filter image_paths based on the mask
