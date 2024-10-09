@@ -100,6 +100,12 @@ fi
             "pipeline.model.camera_optimizer.mode": "off",
             "max_num_iterations": 70000,
         },
+        "tanksandtemples_fastmap": {
+            "@apply": [{"dataset": "tanksandtemples_fastmap"}],
+            "pipeline.model.use_appearance_embedding": False,
+            "pipeline.model.camera_optimizer.mode": "off",
+            "max_num_iterations": 70000,
+        },
         "big": {
             "@description": "Larger setup of Nerfacto model family. It has larger hashgrid and MLPs. It is slower to train and render, but it provides better quality.",
             "method": "nerfacto-big",
