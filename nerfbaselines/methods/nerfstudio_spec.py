@@ -91,7 +91,7 @@ fi
         "mipnerf360": { 
             "@apply": [{"dataset": "mipnerf360"}],
             "pipeline.model.use_appearance_embedding": False,
-            "pipeline.model.camera_optimizer.mode": "off",
+            "pipeline.model.camera_optimizer.mode": "on",
             "max_num_iterations": 70000,
         },
         "tanksandtemples": {
