@@ -86,7 +86,7 @@ fi
             "pipeline.model.distortion_loss_mult": 0.0,
             "pipeline.model.disable_scene_contraction": True,
             "pipeline.model.average_init_density": 1.0,
-            "pipeline.model.camera_optimizer.mode": "off",
+            "pipeline.model.camera_optimizer.mode": "on",
         },    
         "mipnerf360": { 
             "@apply": [{"dataset": "mipnerf360"}],
