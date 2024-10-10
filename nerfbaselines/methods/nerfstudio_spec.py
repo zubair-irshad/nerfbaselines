@@ -97,13 +97,13 @@ fi
         "tanksandtemples": {
             "@apply": [{"dataset": "tanksandtemples"}],
             "pipeline.model.use_appearance_embedding": False,
-            "pipeline.model.camera_optimizer.mode": "off",
+            "pipeline.model.camera_optimizer.mode": "on",
             "max_num_iterations": 70000,
         },
         "tanksandtemples_fastmap": {
             "@apply": [{"dataset": "tanksandtemples_fastmap"}],
             "pipeline.model.use_appearance_embedding": False,
-            "pipeline.model.camera_optimizer.mode": "off",
+            "pipeline.model.camera_optimizer.mode": "on",
             "max_num_iterations": 70000,
         },
         "big": {
