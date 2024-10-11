@@ -44,9 +44,6 @@ NerfStudioSpec: MethodSpec = {
 conda install -y --override-channels -c nvidia/label/cuda-11.8.0 cuda-toolkit
 # conda install -y pytorch==2.3.0 torchvision==0.18.0 pytorch-cuda=11.8 'numpy<2.0.0' -c pytorch -c nvidia
 pip install torch==2.1.2+cu118 torchvision==0.16.2+cu118 --extra-index-url https://download.pytorch.org/whl/cu118
-
-
-
 function nb-post-install () {
 if [ "$NERFBASELINES_DOCKER_BUILD" = "1" ]; then
 # Reduce size of the environment by removing unused files
