@@ -101,24 +101,24 @@ fi
             "pipeline.model.distortion_loss_mult": 0.0,
             "pipeline.model.disable_scene_contraction": True,
             "pipeline.model.average_init_density": 1.0,
-            # "pipeline.model.camera_optimizer.mode": "on",
+            "pipeline.model.camera_optimizer.mode": "off",
         },    
         "mipnerf360": { 
             "@apply": [{"dataset": "mipnerf360"}],
             "pipeline.model.use_appearance_embedding": False,
-            # "pipeline.model.camera_optimizer.mode": "on",
+            "pipeline.model.camera_optimizer.mode": "off",
             "max_num_iterations": 70000,
         },
         "tanksandtemples": {
             "@apply": [{"dataset": "tanksandtemples"}],
             "pipeline.model.use_appearance_embedding": False,
-            # "pipeline.model.camera_optimizer.mode": "on",
+            "pipeline.model.camera_optimizer.mode": "off",
             "max_num_iterations": 70000,
         },
         "tanksandtemples_fastmap": {
             "@apply": [{"dataset": "tanksandtemples_fastmap"}],
             "pipeline.model.use_appearance_embedding": False,
-            # "pipeline.model.camera_optimizer.mode": "on",
+            "pipeline.model.camera_optimizer.mode": "off",
             "max_num_iterations": 70000,
         },
         "big": {
