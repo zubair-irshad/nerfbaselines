@@ -17,11 +17,10 @@ metrics = {
     "loss": "loss.item()",
     "l1_loss": "Ll1.item()",
     "psnr": "10 * torch.log10(1 / torch.mean((image - gt_image) ** 2)).item()",
-    "dist_loss": "dist_loss.item()",
-    "normal_loss": "normal_loss.item()",
     "num_points": "len(gaussians.get_xyz)",
 }
 train_step_disabled_names = [
+    "debug_from",
     "iter_start", 
     "iter_end",
     "training_report",
@@ -187,6 +186,38 @@ def _(ast_module: ast.Module):
 # </patch blender_create_pcd>
 
 
+# Fix utils.reloc_utils initializing CUDA on import
+# <fix reloc_utils>
+@patch_ast_import("utils.reloc_utils")
+def _(ast_module: ast.Module):
+    # Original code:
+    """
+    ...
+    binoms = torch.zeros((N_max, N_max)).float().cuda()
+    ...
+
+    def compute_relocation_cuda(opacity_old, scale_old, N):
+        N.clamp_(min=1, max=N_max-1)
+        return compute_relocation(opacity_old, scale_old, N, binoms, N_max)
+    """
+    # Get binoms=...cuda() call
+    binoms_ast = next(x for x in ast_module.body if isinstance(x, ast.Assign) and x.targets[0].id == "binoms")  # type: ignore
+    assert isinstance(binoms_ast.value, ast.Call) and binoms_ast.value.func.attr == "cuda", "binoms.cuda() not found in reloc_utils"  # type: ignore
+    # Remove binoms.cuda()
+    binoms_ast.value = binoms_ast.value.func.value  # type: ignore
+    # Get compute_relocation_cuda
+    compute_relocation_cuda_ast = next(x for x in ast_module.body if isinstance(x, ast.FunctionDef) and x.name == "compute_relocation_cuda")
+    # Add:
+    # global binoms
+    # if binoms.device.type == "cpu":
+    #     binoms = binoms.cuda()
+    compute_relocation_cuda_ast.body.insert(0, ast.Global(names=["binoms"], lineno=0, col_offset=0))
+    compute_relocation_cuda_ast.body.insert(1, ast.parse("""
+if binoms.device.type == "cpu":
+    binoms = binoms.cuda()
+""").body[0])
+# </fix reloc_utils>
+
 def ast_remove_names(tree, names):
     if isinstance(tree, list):
         return [x for x in (ast_remove_names(x, names) for x in tree) if x is not None]
@@ -242,6 +273,8 @@ if viewpoint_cam.sampling_mask is not None:
         for node in ast.walk(instruction):
             if isinstance(node, ast.Name) and isinstance(node.ctx, ast.Store):
                 global_names.add(node.id)
+    # This is passed as global in 3dgs-mcmc
+    global_names.add("args")
     # Replace all global names with `self`
     class Transformer(ast.NodeTransformer):
         def __init__(self):
@@ -279,17 +312,4 @@ if viewpoint_cam.sampling_mask is not None:
     # print(ast.unparse(train_step))
     # print("Train step sets: ")
     # print(train_step_transformer._stored_names)
-
-
-# Add export mesh function (extract code form render.py)
-@patch_ast_import("render")
-def _(ast_module: ast.Module):
-    # Extract if __name__ == "__main__" block
-    main_block = next(x for x in ast_module.body if isinstance(x, ast.If) and ast.unparse(x.test) == "__name__ == '__main__'")
-    # Get if not args.skip_mesh:
-    if_not_skip_mesh = next(x for x in main_block.body if isinstance(x, ast.If) and ast.unparse(x.test) == "not args.skip_mesh")
-    body = copy.deepcopy(if_not_skip_mesh.body)
-    # Make new function
-    function = ast.parse("""def export_mesh(train_dir, args, gaussExtractor, scene):\n    pass""").body[0]
-    function.body = body  # type: ignore
-    ast_module.body.append(function)
+    # breakpoint()
