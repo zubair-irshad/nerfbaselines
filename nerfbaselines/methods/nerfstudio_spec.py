@@ -125,5 +125,7 @@ fi
     }
 }
 
+print(NerfStudioSpec)
+
 # Register nerfacto
 register(NerfStudioSpec)
