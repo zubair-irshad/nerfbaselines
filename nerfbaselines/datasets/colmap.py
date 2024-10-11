@@ -201,13 +201,13 @@ def _parse_colmap_camera_params(camera: colmap_utils.Camera) -> Tuple[np.ndarray
     return intrinsics, camera_model_to_int(camera_model), distortion_params, (image_width, image_height)
 
 
-def _select_indices_llff(image_names, llffhold=8):
-    # inds = np.argsort(image_names)
-    # inds = inds[::-1]
-    all_indices = np.arange(len(image_names))
-    indices_train = inds[all_indices % llffhold != 0]
-    indices_test = inds[all_indices % llffhold == 0]
-    return indices_train, indices_test
+# def _select_indices_llff(image_names, llffhold=8):
+#     # inds = np.argsort(image_names)
+#     # inds = inds[::-1]
+#     all_indices = np.arange(len(image_names))
+#     indices_train = inds[all_indices % llffhold != 0]
+#     indices_test = inds[all_indices % llffhold == 0]
+#     return indices_train, indices_test
 
 
 def load_colmap_dataset(path: Union[Path, str],
@@ -218,7 +218,7 @@ def load_colmap_dataset(path: Union[Path, str],
         images_path: Optional[Union[Path, str]] = None, 
         colmap_path: Optional[Union[Path, str]] = None,
         sampling_masks_path: Optional[Union[Path, str]] = None,
-        mask_indices = True):
+        mask_indices = False):
     path = Path(path)
     if images_path is not None:
         images_path = Path(images_path)
